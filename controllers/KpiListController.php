@@ -267,13 +267,25 @@ class KpiListController extends Controller
         }
     }
 
+//    public function actionDownload($id,$file,$file_name){
+//        $model = $this->findModel($id);
+//        if(!empty($model->ref) && !empty($model->content_file)){
+//            Yii::$app->response->sendFile($model->getUploadPath().date('Y-m', strtotime($model->content_date)).'/'.$model->ref.'/'.$file,$file_name);
+//        }else{
+//            $this->redirect(['/kpi-list/view','id'=>$id]);
+//        }
+//    }
+
+
     public function actionDownload($id,$file,$file_name){
         $model = $this->findModel($id);
-        if(!empty($model->ref) && !empty($model->content_file)){
-            Yii::$app->response->sendFile($model->getUploadPath().date('Y-m', strtotime($model->content_date)).'/'.$model->ref.'/'.$file,$file_name);
-        }else{
-            $this->redirect(['/kpi-list/view','id'=>$id]);
-        }
+        $ref_path = empty($model->ref) ? '' : $model->ref . '/';
+
+//        if(!empty($model->content_file)){//!empty($model->ref) &&
+        Yii::$app->response->sendFile($model->getUploadPath().date('Y-m', strtotime($model->content_date)).'/'.$ref_path.$file,$file_name);
+//        }else{
+//            $this->redirect(['/kpi-sum/view','id'=>$id]);
+//        }
     }
 
 

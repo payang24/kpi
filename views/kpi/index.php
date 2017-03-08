@@ -959,7 +959,7 @@ if ($embeded != '1' || ($embeded == '1' && $table == '1')) {
                 'format'=>'html',
                 'label' => 'Files', 'hAlign' => 'center',
                 'value' => function ($model, $key, $index, $widget) {
-                    return $model['attach_files'] && $model['attach_files'] != 'null' ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
+                    return $model['attach_files'] && strpos($model['attach_files'], 'null') < 0 != 'null' ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
 
                 }
             ]
@@ -970,7 +970,7 @@ if ($embeded != '1' || ($embeded == '1' && $table == '1')) {
                 'format'=>'html',
                 'label' => 'Quick Win Q1', 'hAlign' => 'center',
                 'value' => function ($model, $key, $index, $widget)  {
-                    return $model['qwin_q1'] && $model['qwin_q1'] != 'null' ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
+                    return $model['qwin_q1'] && strpos($model['qwin_q1'], 'null') < 0 ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
 
                 }
             ]
@@ -981,7 +981,7 @@ if ($embeded != '1' || ($embeded == '1' && $table == '1')) {
                 'format'=>'html',
                 'label' => 'Quick Win Q2', 'hAlign' => 'center',
                 'value' => function ($model, $key, $index, $widget) {
-                    return $model['qwin_q2'] && $model['qwin_q2'] != 'null' ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
+                    return $model['qwin_q2'] && strpos($model['qwin_q2'], 'null') < 0 ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
 
                 }
             ]
@@ -992,7 +992,7 @@ if ($embeded != '1' || ($embeded == '1' && $table == '1')) {
                 'format'=>'html',
                 'label' => 'Quick Win Q2', 'hAlign' => 'center',
                 'value' => function ($model, $key, $index, $widget)  {
-                    return $model['qwin_q3'] && $model['qwin_q3'] != 'null' ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
+                    return $model['qwin_q3'] && strpos($model['qwin_q3'], 'null') < 0 ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
 
                 }
             ]
@@ -1003,7 +1003,7 @@ if ($embeded != '1' || ($embeded == '1' && $table == '1')) {
                 'format'=>'html',
                 'label' => 'Quick Win Q4', 'hAlign' => 'center',
                 'value' => function ($model, $key, $index, $widget)  {
-                    return $model['qwin_q4'] && $model['qwin_q4'] != 'null' ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
+                    return $model['qwin_q4'] && strpos($model['qwin_q4'], 'null') < 0 ? Html::a( '<i class="fa fa-file-text"></i>', ['kpi-sum/view', 'id'=> $model['id']]) : '';
 
                 }
             ]
@@ -1127,7 +1127,10 @@ if ($embeded != '1' || ($embeded == '1' && $desc == '1')) {
                 <td>สูตรคำนวนตัวชี้วัด</td>
                 <td><?= $kpi[0]['formula'] ?></td>
             </tr>
-
+            <tr>
+                <td>เกณฑ์เป้าหมาย</td>
+                <td><?= $kpi[0]['operator'] . ' ' . $kpi[0]['target'] ?></td>
+            </tr>
 
             <tr>
                 <td></td>

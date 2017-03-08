@@ -343,6 +343,20 @@ AND h.hostype in ("18", "3", "2"))'
         ]);
     }
 
+
+    /**
+     * Displays a single KpiSum model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionRegionView($id)
+    {
+        //$this
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Creates a new KpiSum model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -466,6 +480,14 @@ AND h.hostype in ("18", "3", "2"))'
     }
 
 
+    protected function findModelRegion($id)
+    {
+        if (($model = KpiSum::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
 
     public function actionDeletefile($id,$field,$fileName){

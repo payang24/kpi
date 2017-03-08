@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Create HDC Webservice Caller', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Import All', ['import-all'], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <?= GridView::widget([

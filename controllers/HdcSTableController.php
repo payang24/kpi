@@ -26,10 +26,10 @@ class HdcSTableController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'create', 'update', 'view', 'delete', 'get-hdc-summary'],
+                'only' => ['index', 'create', 'update', 'view', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'update', 'view', 'delete', 'get-hdc-summary'],
+                        'actions' => ['index', 'create', 'update', 'view', 'delete'],
                         'allow' => true,
                         'roles' => ['superadmin', 'kpi-system-admin', 'kpi-admin'],
                     ],
@@ -66,6 +66,78 @@ class HdcSTableController extends Controller
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+
+    function post_async($url, $params)
+    {
+        try {
+            $post_string = $params;
+
+            $parts=parse_url($url);
+
+            $fp = fsockopen($parts['host'],
+                isset($parts['port'])?$parts['port']:80,
+                $errno, $errstr, 30);
+
+
+
+            $out = "GET ".$parts['path']."?".$post_string." HTTP/1.1\r\n";//you can use POST instead of GET if you like
+            $out.= "Host: ".$parts['host']."\r\n";
+            $out.= "Content-Type: text/html\r\n";
+            $out.= "Content-Length: ".strlen($post_string)."\r\n";
+            $out.= "Connection: Close\r\n\r\n";
+            fwrite($fp, $out);
+            fclose($fp);
+
+        } catch( Exception $e ){
+
+            return $params ." : Caught exception : <b>".$e->getMessage()."</b><br/>";
+
+        }
+
+
+
+        return $params .' : Successes!';
+    }
+
+//    private function request($url, $payload) {
+//
+//        $cmd = "curl -X POST -H 'Content-Type: application/json'";
+//        $cmd.= " -d '" . $payload . "' " . "'" . $url . "'";
+//
+//        if (!$this->debug()) {
+//            $cmd .= " > /dev/null 2>&1 &";
+//        }
+//
+//        exec($cmd, $output, $exit);
+//        return $exit == 0;
+//    }
+
+
+    public function actionImportAll()
+    {
+
+        $result = '';
+
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_copd_death15');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_dental_caries_free');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_dmht_incidence');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_child_specialpp');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_ckd_egfr');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_cvd_risk');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_height05');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_height614');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_ttm13');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_dm_ht_control');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_referout4pa');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_bmi1859');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_stroke_admit_death');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_kpi_pt_mental');
+        $result.= '<br>'.$this->post_async('http://healthkpi.moph.go.th/hdc-s-table/get-hdc-summary/', 'table_name=s_epi1');
+
+        echo $result;
+
     }
 
 
@@ -195,8 +267,8 @@ class HdcSTableController extends Controller
                 }
             }
 
-
-            $this->redirect(['hdc-s-table/index']);
+            echo 'Successes!';
+            //$this->redirect(['hdc-s-table/index']);
         } else {
             $hdc_table = HdcSTable::findOne(['table_name' => $table_name]);
             $hdc_table->status = 'Failed';
